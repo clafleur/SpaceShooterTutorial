@@ -11,13 +11,29 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
     public float tilt;
+    public float fireRate;
     public Boundary boundary;
+    public GameObject shot;
+    public Transform shotSpawn;
 
     private Rigidbody rb;
+    private float nextFire = 0.5f;
+    private AudioSource audioSource;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            audioSource.Play();
+        }
     }
 
     void FixedUpdate()
